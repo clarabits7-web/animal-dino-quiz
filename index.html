@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="생물 탐험 퀴즈" />
+  <meta name="theme-color" content="#08141e" />
+  <title>신비한 동물·공룡·곤충 탐험대 · 나는 누구일까요? & 진짜 vs 가짜!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- 상단 헤더 -->
+    <header class="top-header">
+      <div class="brand">
+        <span class=" safari-badge">🦖 ANIMAL · DINO · INSECT EXPEDITION</span>
+        <h1>신비한 생물 탐험 퀴즈 대모험</h1>
+      </div>
+
+      <div class="header-controls">
+        <div class="score-pill" title="내가 맞춘 문제 수">
+          <span class="score-label">맞춘 문제</span>
+          <strong id="correctCount">0</strong>
+        </div>
+        <div class="score-pill streak-pill" title="연속 정답 콤보">
+          <span class="score-label">연속 콤보</span>
+          <strong id="streakCount">🔥 0</strong>
+        </div>
+        <button id="ipadGuideBtn" type="button" class="icon-btn ipad-guide-btn" title="아이패드에서 플레이하는 방법">
+          📱 아이패드로 하기
+        </button>
+        <button id="shuffleBtn" type="button" class="icon-btn" title="문제 순서 랜덤 섞기">
+          🔀 랜덤 섞기
+        </button>
+        <button id="listOpenBtn" type="button" class="icon-btn" title="전체 생물 도감 보기">
+          📖 생물 도감 (<span id="modalListCount">34</span>)
+        </button>
+      </div>
+    </header>
+
+    <!-- 게임 모드 전환 탭 (나는 누구일까요? / 진짜 vs 가짜! / 랜덤 믹스) -->
+    <nav class="mode-tabs-bar" aria-label="게임 모드 선택">
+      <button type="button" class="mode-tab-btn active" data-mode="WHO_AM_I">
+        <span class="mode-tab-icon">🔍</span>
+        <div class="mode-tab-text">
+          <strong>모드 1 : 나는 누구일까요?</strong>
+          <span>3단계 힌트·초성·실루엣 보고 동물/공룡/곤충 맞추기</span>
+        </div>
+      </button>
+      <button type="button" class="mode-tab-btn" data-mode="REAL_OR_FAKE">
+        <span class="mode-tab-icon">🕵️</span>
+        <div class="mode-tab-text">
+          <strong>모드 2 : 진짜 vs 가짜!</strong>
+          <span>희귀 생물 vs 합성·상상 동물! 진짜 있는지 O/X 맞추기</span>
+        </div>
+      </button>
+      <button type="button" class="mode-tab-btn" data-mode="MIXED">
+        <span class="mode-tab-icon">🎲</span>
+        <div class="mode-tab-text">
+          <strong>모드 3 : 랜덤 믹스 대모험</strong>
+          <span>이름 맞추기 + 진짜/가짜 판별이 번갈아 나오는 종합 모드</span>
+        </div>
+      </button>
+    </nav>
+
+    <!-- 탐험 BGM & 효과음 컨트롤러 -->
+    <section class="bgm-player-bar" aria-label="탐험 배경음악 및 효과음 플레이어">
+      <div class="bgm-main-controls">
+        <button id="bgmToggleBtn" type="button" class="bgm-play-btn" title="탐험 배경음악 재생 / 일시정지">
+          <span id="bgmPulseIcon" class="bgm-icon">🎵</span>
+          <span id="bgmStatusLabel">탐험 BGM 켜기</span>
+        </button>
+        <div class="bgm-track-wrapper">
+          <span class="bgm-label-tag">🎧 테마 음악:</span>
+          <select id="bgmTrackSelect" class="bgm-track-select" aria-label="탐험 배경음악 선택">
+            <option value="jungle">🌴 정글 사파리 탐험 비트 (신나는 마림바 & 드럼)</option>
+            <option value="dino">🦖 쥬라기 공룡 대모험 (웅장한 어드벤처 비트)</option>
+            <option value="ocean">🌊 미스터리 심해 & 연구소 (신비로운 신스 비트)</option>
+          </select>
+        </div>
+      </div>
+      <div class="bgm-volume-group">
+        <label class="sfx-toggle-label" title="정답 효과음 및 동물 소리 효과 켜기/끄기">
+          <input type="checkbox" id="sfxToggleCheckbox" checked />
+          <span>🔊 효과음·음성</span>
+        </label>
+        <button type="button" id="muteToggleBtn" class="mute-icon-btn" title="음소거 토글">🔉</button>
+        <input type="range" id="bgmVolumeSlider" min="0" max="1" step="0.05" value="0.35" class="bgm-vol-slider" title="볼륨 조절" />
+        <span id="volValueText" class="vol-text">35%</span>
+      </div>
+    </section>
+
+    <!-- 옵션 툴바: 생물 카테고리 선택 & 문제 수 선택 -->
+    <section class="filter-toolbar">
+      <div class="filter-row category-filter-row">
+        <div class="category-filter-wrapper">
+          <div class="category-title-row">
+            <span class="filter-label">🐾 등장 생물 카테고리 <span class="filter-sublabel">(복수 선택 가능)</span>:</span>
+            <div class="category-quick-actions">
+              <button type="button" id="selectAllCategoriesBtn" class="text-action-btn">전체 선택</button>
+              <span class="action-divider">·</span>
+              <button type="button" id="resetCategoriesBtn" class="text-action-btn">모드 추천값</button>
+            </div>
+          </div>
+          <div class="category-chips" id="categoryChips">
+            <!-- JS에서 카테고리 칩 렌더링 -->
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-row count-filter-row">
+        <div class="count-filter-wrapper">
+          <span class="filter-label">🎯 퀴즈 문제 수:</span>
+          <div class="count-chips" id="countChips">
+            <button type="button" class="count-chip-btn" data-count="10">10문제</button>
+            <button type="button" class="count-chip-btn" data-count="20">20문제</button>
+            <button type="button" class="count-chip-btn active" data-count="ALL">전체 풀 (<span id="totalPoolCount">34</span>문제)</button>
+          </div>
+        </div>
+        <span id="quizModeBadge" class="quiz-mode-badge">나는 누구일까요? · 34문제</span>
+      </div>
+    </section>
+
+    <!-- 진행 상태 바 -->
+    <section class="progress-section" aria-label="진행률">
+      <div class="progress-info">
+        <span id="questionCounter" class="counter-badge">QUESTION 1 / 34</span>
+        <span class="keyboard-guide">단축키: <kbd>H</kbd> 다음 힌트 · <kbd>Space</kbd> 정답확인 · <kbd>O</kbd> 진짜 / <kbd>X</kbd> 가짜 · <kbd>←</kbd><kbd>→</kbd> 이동</span>
+      </div>
+      <div class="progress-bar-track">
+        <div id="progressBarFill" class="progress-bar-fill" style="width: 3%"></div>
+      </div>
+    </section>
+
+    <!-- 메인 퀴즈 카드 -->
+    <main class="quiz-stage">
+      <article class="quiz-card" id="quizCard">
+        <!-- 상단 배지 헤더 -->
+        <div class="card-top-meta">
+          <div class="meta-left-badges">
+            <span id="currentSubModeBadge" class="submode-pill">🔍 나는 누구일까요?</span>
+            <span id="categoryBadge" class="category-pill">🦁 육지동물</span>
+            <span id="rarityBadge" class="rarity-pill">🌟 희귀 생물</span>
+          </div>
+          <div class="hint-step-indicators" id="hintStepIndicators">
+            <span class="step-dot" id="stepDot1">1단계 힌트</span>
+            <span class="step-dot" id="stepDot2">2단계 힌트</span>
+            <span class="step-dot" id="stepDot3">3단계 초성·실루엣</span>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- [뷰 A] 모드 1 : 나는 누구일까요? (힌트 + 초성 + 객관식) -->
+        <!-- ======================================================== -->
+        <div id="whoAmIView" class="question-view">
+          <div class="whoami-hero-grid">
+            <!-- 미스터리 비주얼 박스 (힌트 전에는 미스터리 실루엣/아이콘, 3단계에서 블러 프리뷰) -->
+            <div class="mystery-visual-box" id="mysteryVisualBox">
+              <div class="mystery-silhouette-card" id="mysterySilhouetteCard">
+                <div class="silhouette-question-mark" id="mysteryQuestionMark">❓</div>
+                <div class="silhouette-emoji-preview hidden" id="mysteryEmojiPreview">🦖</div>
+                <img id="mysteryBlurPreviewImg" class="mystery-blur-img hidden" src="" alt="생물 실루엣 힌트" />
+                <span class="mystery-status-caption" id="mysteryStatusCaption">힌트를 열어 정체를 추리해 보세요!</span>
+              </div>
+            </div>
+
+            <!-- 초성 타일 & 핵심 단서 영역 -->
+            <div class="whoami-clue-panel">
+              <div class="choseong-box">
+                <div class="choseong-header-row">
+                  <span class="choseong-caption" id="choseongCaption">🔤 생물 이름 글자 수 힌트</span>
+                  <button type="button" id="toggleChoseongInstantBtn" class="mini-pill-btn">초성 바로 보기</button>
+                </div>
+                <div id="choseongDisplay" class="choseong-letters" aria-live="polite">
+                  <!-- JS에서 글자 타일 렌더링 -->
+                </div>
+              </div>
+
+              <div class="quick-stat-bar">
+                <div class="quick-stat-item">
+                  <span class="stat-icon">📍</span>
+                  <div>
+                    <small>서식지 / 시대</small>
+                    <strong id="habitatPreviewText">힌트 1단계에서 공개됩니다</strong>
+                  </div>
+                </div>
+                <div class="quick-stat-item">
+                  <span class="stat-icon">📏</span>
+                  <div>
+                    <small>크기 / 몸집</small>
+                    <strong id="sizePreviewText">힌트 1단계에서 공개됩니다</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 단계별 힌트 리스트 -->
+          <section id="hintZone" class="hint-zone" aria-live="polite">
+            <div class="hint-header">
+              <span class="hint-badge">💡 탐험 단서 노트 (<span id="hintCountLabel">0 / 3</span> 단계 오픈)</span>
+              <span class="hint-ready-tag" id="hintGuideTag">아래 [다음 힌트 열기] 버튼을 눌러보세요!</span>
+            </div>
+            <ul id="hintList" class="hint-list">
+              <!-- JS에서 단계별 힌트 카드 추가 -->
+            </ul>
+          </section>
+
+          <!-- 초등학생용 4지선다 객관식 선택지 (원할 때 눌러서 바로 맞출 수 있음) -->
+          <section class="multiple-choice-section">
+            <div class="mc-header-row">
+              <span class="mc-title">🎯 보기 중에서 골라볼까요? <small>(직접 말로 맞추거나 버튼을 눌러보세요!)</small></span>
+            </div>
+            <div id="mcChoicesGrid" class="mc-choices-grid">
+              <!-- JS에서 4지선다 버튼 생성 -->
+            </div>
+          </section>
+
+          <!-- 모드 1 전용 액션 버튼 -->
+          <div class="action-buttons-row" id="whoAmIActionRow">
+            <button id="hintBtn" type="button" class="btn btn-hint">
+              <span class="btn-icon">💡</span>
+              <span id="hintBtnText">1단계 힌트 열기 (1/3)</span>
+            </button>
+            <button id="answerBtn" type="button" class="btn btn-answer">
+              <span class="btn-icon">🎉</span>
+              <span id="answerBtnText">정답 확인하기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- [뷰 B] 모드 2 : 진짜 vs 가짜! (희귀 생물 vs 합성 생물 O/X) -->
+        <!-- ======================================================== -->
+        <div id="realOrFakeView" class="question-view hidden">
+          <div class="rof-banner">
+            <span class="rof-detective-icon">🕵️‍♂️</span>
+            <div class="rof-banner-text">
+              <h2>지구에 <strong>진짜 존재하는 생물</strong>일까요? 아니면 <strong>합성·가짜</strong>일까요?</h2>
+              <p>세상에는 합성 사진보다 더 신기하게 생긴 진짜 희귀 동물과 공룡도 있고, 감쪽같은 합성 동물도 숨어 있어요!</p>
+            </div>
+          </div>
+
+          <div class="rof-stage-grid">
+            <!-- 의문의 생물 비주얼 카드 -->
+            <div class="rof-visual-frame" id="rofVisualFrame">
+              <div id="rofVisualContent" class="rof-visual-content">
+                <!-- JS에서 미스터리 프리뷰 카드 또는 합성 프리뷰 렌더링 -->
+              </div>
+              <span class="rof-suspect-tag" id="rofSuspectNameTag">피의자 생물: ???</span>
+            </div>
+
+            <!-- 질문 카드 & O/X 선택 버튼 -->
+            <div class="rof-question-panel">
+              <div class="rof-claim-box">
+                <span class="claim-label">📋 탐험대 제보 내용</span>
+                <p id="rofClaimText" class="rof-claim-text">
+                  오리의 주둥이와 비버의 꼬리를 가지고, 포유류인데 알을 낳으며 뒷발에 독침까지 있는 동물이 세상에 진짜 있을까요?
+                </p>
+              </div>
+
+              <!-- 단서 힌트 토글 -->
+              <div class="rof-clue-box">
+                <button type="button" id="rofHintBtn" class="rof-clue-btn">
+                  🔍 탐정 힌트 하나 보기
+                </button>
+                <p id="rofHintText" class="rof-hint-text hidden"></p>
+              </div>
+
+              <!-- 대형 O / X 판별 버튼 -->
+              <div class="ox-buttons-grid" id="oxButtonsGrid">
+                <button type="button" id="voteRealBtn" class="ox-btn ox-btn-real">
+                  <span class="ox-symbol">⭕</span>
+                  <div class="ox-btn-copy">
+                    <strong>진짜 있다!</strong>
+                    <span>실제 지구에 존재함</span>
+                  </div>
+                </button>
+                <button type="button" id="voteFakeBtn" class="ox-btn ox-btn-fake">
+                  <span class="ox-symbol">❌</span>
+                  <div class="ox-btn-copy">
+                    <strong>가짜다!</strong>
+                    <span>합성 · 상상의 생물</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- [공통 정답 공개 영역] 사진 + 합성 레시피 + 반전 과학 해설 -->
+        <!-- ======================================================== -->
+        <section id="answerZone" class="answer-zone hidden" aria-live="polite">
+          <!-- 사용자 선택 판정 배너 -->
+          <div id="userFeedbackBanner" class="user-feedback-banner hidden">
+            <span id="feedbackIcon" class="feedback-icon">🎉</span>
+            <strong id="feedbackText">정답입니다! 대단한 생물 박사님이네요!</strong>
+          </div>
+
+          <div class="answer-card-inner">
+            <!-- 좌측: 생물 실제 사진 또는 합성 해부 비주얼 -->
+            <div class="creature-photo-wrapper">
+              <div id="photoLoading" class="photo-skeleton">🔍 생물 사진 불러오는 중...</div>
+              <img id="creaturePhoto" src="" alt="생물 사진" class="creature-photo hidden" />
+
+              <!-- 가짜(합성) 생물일 때 보여주는 2종 합성 해부 카드 -->
+              <div id="hybridVisualCard" class="hybrid-visual-card hidden">
+                <div class="hybrid-badge-top">🧪 합성 생물 해부 분석</div>
+                <div class="hybrid-split-photos">
+                  <div class="hybrid-half">
+                    <img id="hybridPhoto1" src="" alt="합성 원본 1" class="hybrid-img" />
+                    <span id="hybridLabel1" class="hybrid-part-label">원본 1</span>
+                  </div>
+                  <div class="hybrid-plus-sign">➕</div>
+                  <div class="hybrid-half">
+                    <img id="hybridPhoto2" src="" alt="합성 원본 2" class="hybrid-img" />
+                    <span id="hybridLabel2" class="hybrid-part-label">원본 2</span>
+                  </div>
+                </div>
+                <div id="hybridThemeBanner" class="hybrid-theme-banner">SHARK + HORSE</div>
+              </div>
+
+              <!-- 위키 이미지 로드 실패 시 이모지 아트워크 폴백 -->
+              <div id="emojiFallbackCard" class="emoji-fallback-card hidden">
+                <div class="fallback-big-emoji" id="fallbackBigEmoji">🦖</div>
+                <span class="fallback-en-title" id="fallbackEnTitle">CREATURE</span>
+              </div>
+
+              <button type="button" id="playCreatureSoundBtn" class="sound-action-btn">
+                🔊 생물 소리 & 설명 듣기
+              </button>
+            </div>
+
+            <!-- 우측: 생물 이름 + 진실 판정 + 초등 과학 상식 -->
+            <div class="creature-info-content">
+              <div class="answer-badge-row">
+                <span id="answerRealFakeBadge" class="verdict-pill verdict-real">⭕ 실존 생물</span>
+                <span id="answerCategoryTag" class="answer-category-tag">🦁 육지동물</span>
+                <span id="answerHabitatTag" class="answer-habitat-tag">📍 호주</span>
+              </div>
+
+              <div class="answer-title-group">
+                <h2 id="answerKoreanName" class="answer-kr-name">오리너구리</h2>
+                <p id="answerEnglishName" class="answer-en-name">Platypus</p>
+              </div>
+
+              <!-- 반전 해설 박스 -->
+              <div id="verdictHighlightBox" class="verdict-highlight-box">
+                <h3 id="verdictTitleText" class="verdict-title">⭕ 놀랍게도 진짜 존재하는 동물입니다!</h3>
+                <p id="verdictDescText" class="verdict-desc"></p>
+              </div>
+
+              <!-- 재미있는 초등 과학 상식 3가지 -->
+              <div class="fun-facts-box">
+                <h4 class="fun-facts-heading">🔬 신기한 생물 도감 핵심 상식</h4>
+                <ul id="answerFunFactsList" class="answer-desc-list">
+                  <!-- JS에서 상식 렌더링 -->
+                </ul>
+              </div>
+
+              <div class="self-score-actions">
+                <button id="markCorrectBtn" type="button" class="score-check-btn">
+                  ⭕ 맞췄어요! 점수 추가 (+1)
+                </button>
+                <button id="nextAfterAnswerBtn" type="button" class="next-big-btn">
+                  다음 문제로 이동 →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 이전 / 다음 문제 하단 네비게이션 -->
+        <footer class="card-footer-nav">
+          <button id="prevBtn" type="button" class="nav-btn">
+            ← 이전 생물
+          </button>
+          <div class="footer-center-options">
+            <label class="toggle-label" id="showChoseongStartLabel">
+              <input type="checkbox" id="showChoseongStartToggle" />
+              <span>처음부터 초성 힌트 함께 표시</span>
+            </label>
+          </div>
+          <button id="nextBtn" type="button" class="nav-btn nav-btn-primary">
+            다음 생물 →
+          </button>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 1. 전체 생물 도감 모달 (<dialog closedby="any">) -->
+  <!-- ======================================================== -->
+  <dialog id="creatureListModal" class="creature-modal" closedby="any" aria-labelledby="creatureListModalTitle">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div>
+          <h3 id="creatureListModalTitle">📖 신비한 동물·공룡·곤충·합성생물 도감</h3>
+          <p class="modal-sub">원하는 생물 카드를 클릭하면 해당 문제로 바로 이동합니다.</p>
+        </div>
+        <button id="closeModalBtn" type="button" class="close-modal-btn" aria-label="도감 닫기">✕</button>
+      </div>
+      <div class="modal-filter-bar">
+        <input type="search" id="searchCreatureInput" aria-label="생물 이름 또는 초성 검색" placeholder="생물 이름, 카테고리, 초성 검색 (예: 티라노, 오리너구리, 샤크호스, ㅇㄹㄴㄱㄹ)..." />
+      </div>
+      <div id="creatureGridList" class="creature-grid-list">
+        <!-- JS로 도감 카드 그리드 생성 -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ======================================================== -->
+  <!-- 2. 퀴즈 완료 결과 모달 (<dialog closedby="any">) -->
+  <!-- ======================================================== -->
+  <dialog id="quizResultModal" class="creature-modal result-modal" closedby="any" aria-labelledby="quizResultModalTitle">
+    <div class="modal-inner result-modal-inner">
+      <div class="result-celebration" id="resultTrophyEmoji">🦖</div>
+      <h2 id="quizResultModalTitle" class="result-title">탐험 완료! 수고하셨습니다!</h2>
+      <p id="resultSubtitle" class="result-subtitle">모든 생물 탐험 문제를 풀었습니다.</p>
+
+      <div class="result-rank-badge" id="resultRankBadge">👑 전설의 생물학 박사님</div>
+
+      <div class="result-score-card">
+        <div class="result-stat">
+          <span class="stat-label">탐험한 문제</span>
+          <strong id="resultTotalQuestions">10</strong>
+        </div>
+        <div class="result-stat">
+          <span class="stat-label">맞춘 문제</span>
+          <strong id="resultCorrectQuestions" class="stat-highlight">8</strong>
+        </div>
+        <div class="result-stat">
+          <span class="stat-label">정답률</span>
+          <strong id="resultAccuracy">80%</strong>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button id="restartSameDeckBtn" type="button" class="btn btn-hint">
+          🔄 같은 문제 다시 풀기
+        </button>
+        <button id="restartNewDeckBtn" type="button" class="btn btn-answer">
+          🔀 새로운 순서로 다시 시작
+        </button>
+      </div>
+      <button id="closeResultBtn" type="button" class="text-close-btn">창 닫고 문제 더 둘러보기</button>
+    </div>
+  </dialog>
+
+  <!-- ======================================================== -->
+  <!-- 3. 아이패드 플레이 가이드 모달 (<dialog closedby="any">) -->
+  <!-- ======================================================== -->
+  <dialog id="ipadGuideModal" class="creature-modal ipad-modal" closedby="any" aria-labelledby="ipadGuideModalTitle">
+    <div class="modal-inner ipad-modal-inner">
+      <div class="modal-header">
+        <div>
+          <h3 id="ipadGuideModalTitle">📱 아이패드 / 태블릿에서 전체화면 앱처럼 즐기기</h3>
+          <p class="modal-sub">아이들과 소파나 식탁에서 아이패드 터치로 편하게 플레이하세요!</p>
+        </div>
+        <button id="closeIpadGuideBtn" type="button" class="close-modal-btn" aria-label="가이드 닫기">✕</button>
+      </div>
+
+      <div class="ipad-steps">
+        <div class="ipad-step-card">
+          <span class="step-num">STEP 1 · 깃허브 웹 주소 접속</span>
+          <h4>어디서든 아이패드 Safari로 바로 접속!</h4>
+          <p>아이패드 Safari 주소창에 아래 주소를 입력하면 Mac을 켜지 않아도 언제든 바로 플레이할 수 있습니다:</p>
+          <p style="margin-top:6px;"><strong style="color:#34d399; word-break:break-all;">https://clarabits7-web.github.io/animal-dino-quiz/</strong></p>
+        </div>
+        <div class="ipad-step-card">
+          <span class="step-num">STEP 2 · 홈 화면에 추가</span>
+          <h4>아이패드에서 전체화면 앱처럼 실행</h4>
+          <p>아이패드 Safari에서 접속한 뒤 <strong>[공유 버튼] → [홈 화면에 추가]</strong>를 누르면 진짜 앱처럼 전체화면으로 실행됩니다.</p>
+        </div>
+        <div class="ipad-step-card">
+          <span class="step-num">STEP 3 · 터치 & 스와이프</span>
+          <h4>터치 & 좌우 스와이프 지원</h4>
+          <p>화면을 손가락으로 좌우로 밀어(스와이프) 다음/이전 문제로 넘기거나, 큼직한 ⭕/❌ 버튼과 4지선다 보기를 터치해 즐길 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="creatures.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
