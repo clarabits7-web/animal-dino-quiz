@@ -1,113 +1,11 @@
 // =========================================================================
-// 🦖 신비한 생물 탐험대 데이터베이스 (200 OK 검증된 고화질 이미지 51종 내장)
+// 🦖 신비한 생물 탐험대 데이터베이스 (프로젝트 내장 로컬 이미지 사용 - 100% 보장!)
 // =========================================================================
 
-const CREATURE_IMAGES = {
-  "Three-banded_armadillo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/SouthernThreeBandedArmadillo065b.jpg/500px-SouthernThreeBandedArmadillo065b.jpg",
-  "Saltwater_crocodile": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/SaltwaterCrocodile%28%27Maximo%27%29.jpg/500px-SaltwaterCrocodile%28%27Maximo%27%29.jpg",
-  "Honey_badger": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Honey_Badger.jpg/500px-Honey_Badger.jpg",
-  "Ocean_sunfish": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Mola_mola.jpg/500px-Mola_mola.jpg",
-  "Axolotl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Axolotl_ganz.jpg/500px-Axolotl_ganz.jpg",
-  "Spinosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/FSAC-KK-11888.jpg/500px-FSAC-KK-11888.jpg",
-  "Velociraptor": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Velociraptor_skeleton_white_background.jpg/500px-Velociraptor_skeleton_white_background.jpg",
-  "Great_white_shark": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/White_shark.jpg/500px-White_shark.jpg",
-  "Brown_bear": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/2010-kodiak-bear-1.jpg/500px-2010-kodiak-bear-1.jpg",
-  "Pteranodon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Pteranodon_amnh_martyniuk.jpg/500px-Pteranodon_amnh_martyniuk.jpg",
-  "Pug": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Mops_oct09_cropped2.jpg/500px-Mops_oct09_cropped2.jpg",
-  "Psychrolutes_marcidus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Psychrolutes_marcidus.jpg/500px-Psychrolutes_marcidus.jpg",
-  "Sloth": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Bicho-pregui%C3%A7a_3.jpg/500px-Bicho-pregui%C3%A7a_3.jpg",
-  "Red_panda": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Red_Panda%2C_Gentle_Tree-Dweller_of_the_Himalayas.jpg/500px-Red_Panda%2C_Gentle_Tree-Dweller_of_the_Himalayas.jpg",
-  "Tyrannosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Tyrannosaurus_Rex_Holotype.jpg/500px-Tyrannosaurus_Rex_Holotype.jpg",
-  "Thorny_devil": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Thornydevil.jpg/500px-Thornydevil.jpg",
-  "Hercules_beetle": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Dynastes_hercules_ecuatorianus_MHNT.jpg/500px-Dynastes_hercules_ecuatorianus_MHNT.jpg",
-  "Tiger": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Bengal_tiger_%28Panthera_tigris_tigris%29_female_3_crop.jpg/500px-Bengal_tiger_%28Panthera_tigris_tigris%29_female_3_crop.jpg",
-  "Cat": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Siam_lilacpoint.jpg/500px-Siam_lilacpoint.jpg",
-  "African_bush_elephant": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/178_Male_African_bush_elephant_in_Etosha_National_Park_Photo_by_Giles_Laurent.jpg/500px-178_Male_African_bush_elephant_in_Etosha_National_Park_Photo_by_Giles_Laurent.jpg",
-  "Ankylosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Ankylosaur_head_-_cast_-_Custer_County_Montana_-_Museum_of_the_Rockies_-_2013-07-08.jpg/500px-Ankylosaur_head_-_cast_-_Custer_County_Montana_-_Museum_of_the_Rockies_-_2013-07-08.jpg",
-  "Pachycephalosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Pachycephalosaurus_wyomingensis_ROM.jpg/500px-Pachycephalosaurus_wyomingensis_ROM.jpg",
-  "Himantolophus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Himantolophus_groenlandicus.png/500px-Himantolophus_groenlandicus.png",
-  "Bald_eagle": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Bald_eagle_about_to_fly_in_Alaska_%282016%29.jpg/500px-Bald_eagle_about_to_fly_in_Alaska_%282016%29.jpg",
-  "Grimpoteuthis": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Dumbo-hires_%28cropped%29.jpg/500px-Dumbo-hires_%28cropped%29.jpg",
-  "Mosasaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Mosasaurus_hoffmannii_-_skeleton.jpg/500px-Mosasaurus_hoffmannii_-_skeleton.jpg",
-  "Fennec_fox": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Fennec_Fox_Vulpes_zerda.jpg/500px-Fennec_Fox_Vulpes_zerda.jpg",
-  "Okapi": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Saint-Aignan_%28Loir-et-Cher%29._Okapi.jpg/500px-Saint-Aignan_%28Loir-et-Cher%29._Okapi.jpg",
-  "White_rhinoceros": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/109_Male_White_rhinoceros_walking_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg/500px-109_Male_White_rhinoceros_walking_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg",
-  "Shoebill": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8a.jpg/500px-Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8a.jpg",
-  "Leafy_seadragon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Leafy_Seadragon_on_Kangaroo_Island.jpg/500px-Leafy_Seadragon_on_Kangaroo_Island.jpg",
-  "Quokka": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Setonix_brachyurus_on_Rottnest_Island_1.jpg/500px-Setonix_brachyurus_on_Rottnest_Island_1.jpg",
-  "Brachiosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Brachiosaurus_mount.jpg/500px-Brachiosaurus_mount.jpg",
-  "Capybara": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Capybaracropped.jpg/500px-Capybaracropped.jpg",
-  "Narwhal": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/%D0%9D%D0%B0%D1%80%D0%B2%D0%B0%D0%BB_%D0%B2_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B9_%D0%90%D1%80%D0%BA%D1%82%D0%B8%D0%BA%D0%B5.jpg/500px-%D0%9D%D0%B0%D1%80%D0%B2%D0%B0%D0%BB_%D0%B2_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B9_%D0%90%D1%80%D0%BA%D1%82%D0%B8%D0%BA%D0%B5.jpg",
-  "Horse": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Nokota_Horses_cropped.jpg/500px-Nokota_Horses_cropped.jpg",
-  "Venezuelan_poodle_moth": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/-_7683_%E2%80%93_Artace_cribrarius_%E2%80%93_Dot-lined_White_Moth_%2848128137706%29.jpg/500px--_7683_%E2%80%93_Artace_cribrarius_%E2%80%93_Dot-lined_White_Moth_%2848128137706%29.jpg",
-  "Platypus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Duck-billed_platypus_%28Ornithorhynchus_anatinus%29_Scottsdale.jpg/500px-Duck-billed_platypus_%28Ornithorhynchus_anatinus%29_Scottsdale.jpg",
-  "Maratus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/MalePeacockSpider.jpg/500px-MalePeacockSpider.jpg",
-  "Therizinosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Therizinosaurus_arms.jpg/500px-Therizinosaurus_arms.jpg",
-  "Megalodon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Megalodon_jaw%2C_Tellus_Science_Museum.jpg/500px-Megalodon_jaw%2C_Tellus_Science_Museum.jpg",
-  "Pangolin": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Eupholidota.jpg/500px-Eupholidota.jpg",
-  "Giant_squid": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Giant_squid_Ranheim.jpg/500px-Giant_squid_Ranheim.jpg",
-  "Odontodactylus_scyllarus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Odontodactylus_scyllarus_R%C3%A9union.jpg/500px-Odontodactylus_scyllarus_R%C3%A9union.jpg",
-  "Emperor_penguin": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg/500px-Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg",
-  "Horseshoe_crab": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Tachypleus_gigas.JPG/500px-Tachypleus_gigas.JPG",
-  "Monarch_butterfly": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Monarch_Butterfly_Danaus_plexippus_Male_2664px.jpg/500px-Monarch_Butterfly_Danaus_plexippus_Male_2664px.jpg",
-  "Coconut_crab": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Coconut_Crab_Birgus_latro.jpg/500px-Coconut_Crab_Birgus_latro.jpg",
-  "Triceratops": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/LA-Triceratops_mount-2.jpg/500px-LA-Triceratops_mount-2.jpg",
-  "Owl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Bubo_bubo_sibiricus_-_01.JPG/500px-Bubo_bubo_sibiricus_-_01.JPG",
-  "Proboscis_monkey": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Proboscis_Monkey_in_Borneo.jpg/500px-Proboscis_Monkey_in_Borneo.jpg"
-};
-const HYBRID_IMAGES = {
-  "Three-banded_armadillo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/SouthernThreeBandedArmadillo065b.jpg/500px-SouthernThreeBandedArmadillo065b.jpg",
-  "Saltwater_crocodile": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/SaltwaterCrocodile%28%27Maximo%27%29.jpg/500px-SaltwaterCrocodile%28%27Maximo%27%29.jpg",
-  "Honey_badger": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Honey_Badger.jpg/500px-Honey_Badger.jpg",
-  "Ocean_sunfish": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Mola_mola.jpg/500px-Mola_mola.jpg",
-  "Axolotl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Axolotl_ganz.jpg/500px-Axolotl_ganz.jpg",
-  "Spinosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/FSAC-KK-11888.jpg/500px-FSAC-KK-11888.jpg",
-  "Velociraptor": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Velociraptor_skeleton_white_background.jpg/500px-Velociraptor_skeleton_white_background.jpg",
-  "Great_white_shark": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/White_shark.jpg/500px-White_shark.jpg",
-  "Brown_bear": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/2010-kodiak-bear-1.jpg/500px-2010-kodiak-bear-1.jpg",
-  "Pteranodon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Pteranodon_amnh_martyniuk.jpg/500px-Pteranodon_amnh_martyniuk.jpg",
-  "Pug": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Mops_oct09_cropped2.jpg/500px-Mops_oct09_cropped2.jpg",
-  "Psychrolutes_marcidus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Psychrolutes_marcidus.jpg/500px-Psychrolutes_marcidus.jpg",
-  "Sloth": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Bicho-pregui%C3%A7a_3.jpg/500px-Bicho-pregui%C3%A7a_3.jpg",
-  "Red_panda": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Red_Panda%2C_Gentle_Tree-Dweller_of_the_Himalayas.jpg/500px-Red_Panda%2C_Gentle_Tree-Dweller_of_the_Himalayas.jpg",
-  "Tyrannosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Tyrannosaurus_Rex_Holotype.jpg/500px-Tyrannosaurus_Rex_Holotype.jpg",
-  "Thorny_devil": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Thornydevil.jpg/500px-Thornydevil.jpg",
-  "Hercules_beetle": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Dynastes_hercules_ecuatorianus_MHNT.jpg/500px-Dynastes_hercules_ecuatorianus_MHNT.jpg",
-  "Tiger": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Bengal_tiger_%28Panthera_tigris_tigris%29_female_3_crop.jpg/500px-Bengal_tiger_%28Panthera_tigris_tigris%29_female_3_crop.jpg",
-  "Cat": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Siam_lilacpoint.jpg/500px-Siam_lilacpoint.jpg",
-  "African_bush_elephant": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/178_Male_African_bush_elephant_in_Etosha_National_Park_Photo_by_Giles_Laurent.jpg/500px-178_Male_African_bush_elephant_in_Etosha_National_Park_Photo_by_Giles_Laurent.jpg",
-  "Ankylosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Ankylosaur_head_-_cast_-_Custer_County_Montana_-_Museum_of_the_Rockies_-_2013-07-08.jpg/500px-Ankylosaur_head_-_cast_-_Custer_County_Montana_-_Museum_of_the_Rockies_-_2013-07-08.jpg",
-  "Pachycephalosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Pachycephalosaurus_wyomingensis_ROM.jpg/500px-Pachycephalosaurus_wyomingensis_ROM.jpg",
-  "Himantolophus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Himantolophus_groenlandicus.png/500px-Himantolophus_groenlandicus.png",
-  "Bald_eagle": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Bald_eagle_about_to_fly_in_Alaska_%282016%29.jpg/500px-Bald_eagle_about_to_fly_in_Alaska_%282016%29.jpg",
-  "Grimpoteuthis": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Dumbo-hires_%28cropped%29.jpg/500px-Dumbo-hires_%28cropped%29.jpg",
-  "Mosasaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Mosasaurus_hoffmannii_-_skeleton.jpg/500px-Mosasaurus_hoffmannii_-_skeleton.jpg",
-  "Fennec_fox": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Fennec_Fox_Vulpes_zerda.jpg/500px-Fennec_Fox_Vulpes_zerda.jpg",
-  "Okapi": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Saint-Aignan_%28Loir-et-Cher%29._Okapi.jpg/500px-Saint-Aignan_%28Loir-et-Cher%29._Okapi.jpg",
-  "White_rhinoceros": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/109_Male_White_rhinoceros_walking_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg/500px-109_Male_White_rhinoceros_walking_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg",
-  "Shoebill": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8a.jpg/500px-Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8a.jpg",
-  "Leafy_seadragon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Leafy_Seadragon_on_Kangaroo_Island.jpg/500px-Leafy_Seadragon_on_Kangaroo_Island.jpg",
-  "Quokka": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Setonix_brachyurus_on_Rottnest_Island_1.jpg/500px-Setonix_brachyurus_on_Rottnest_Island_1.jpg",
-  "Brachiosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Brachiosaurus_mount.jpg/500px-Brachiosaurus_mount.jpg",
-  "Capybara": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Capybaracropped.jpg/500px-Capybaracropped.jpg",
-  "Narwhal": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/%D0%9D%D0%B0%D1%80%D0%B2%D0%B0%D0%BB_%D0%B2_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B9_%D0%90%D1%80%D0%BA%D1%82%D0%B8%D0%BA%D0%B5.jpg/500px-%D0%9D%D0%B0%D1%80%D0%B2%D0%B0%D0%BB_%D0%B2_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B9_%D0%90%D1%80%D0%BA%D1%82%D0%B8%D0%BA%D0%B5.jpg",
-  "Horse": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Nokota_Horses_cropped.jpg/500px-Nokota_Horses_cropped.jpg",
-  "Venezuelan_poodle_moth": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/-_7683_%E2%80%93_Artace_cribrarius_%E2%80%93_Dot-lined_White_Moth_%2848128137706%29.jpg/500px--_7683_%E2%80%93_Artace_cribrarius_%E2%80%93_Dot-lined_White_Moth_%2848128137706%29.jpg",
-  "Platypus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Duck-billed_platypus_%28Ornithorhynchus_anatinus%29_Scottsdale.jpg/500px-Duck-billed_platypus_%28Ornithorhynchus_anatinus%29_Scottsdale.jpg",
-  "Maratus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/MalePeacockSpider.jpg/500px-MalePeacockSpider.jpg",
-  "Therizinosaurus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Therizinosaurus_arms.jpg/500px-Therizinosaurus_arms.jpg",
-  "Megalodon": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Megalodon_jaw%2C_Tellus_Science_Museum.jpg/500px-Megalodon_jaw%2C_Tellus_Science_Museum.jpg",
-  "Pangolin": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Eupholidota.jpg/500px-Eupholidota.jpg",
-  "Giant_squid": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Giant_squid_Ranheim.jpg/500px-Giant_squid_Ranheim.jpg",
-  "Odontodactylus_scyllarus": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Odontodactylus_scyllarus_R%C3%A9union.jpg/500px-Odontodactylus_scyllarus_R%C3%A9union.jpg",
-  "Emperor_penguin": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg/500px-Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg",
-  "Horseshoe_crab": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Tachypleus_gigas.JPG/500px-Tachypleus_gigas.JPG",
-  "Monarch_butterfly": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Monarch_Butterfly_Danaus_plexippus_Male_2664px.jpg/500px-Monarch_Butterfly_Danaus_plexippus_Male_2664px.jpg",
-  "Coconut_crab": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Coconut_Crab_Birgus_latro.jpg/500px-Coconut_Crab_Birgus_latro.jpg",
-  "Triceratops": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/LA-Triceratops_mount-2.jpg/500px-LA-Triceratops_mount-2.jpg",
-  "Owl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Bubo_bubo_sibiricus_-_01.JPG/500px-Bubo_bubo_sibiricus_-_01.JPG",
-  "Proboscis_monkey": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Proboscis_Monkey_in_Borneo.jpg/500px-Proboscis_Monkey_in_Borneo.jpg"
-};
+function getCreatureLocalImagePath(wikiTitle) {
+  if (!wikiTitle) return '';
+  return 'images/' + encodeURIComponent(wikiTitle) + '.jpg';
+}
 
 const CREATURES = [
   // =======================================================================
@@ -1414,5 +1312,6 @@ const CREATURES = [
     ]
   }
 ];
+
 
 

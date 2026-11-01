@@ -159,27 +159,25 @@ function renderQuestion() {
 
   // 사진 세팅
   if (creature.isReal) {
-    // [진짜 생물] 단독 고화질 실제 사진
+    // [진짜 생물] 단독 고화질 실제 사진 (내장 로컬 이미지)
     singlePhotoWrapperEl.classList.remove('hidden');
     hybridPhotoWrapperEl.classList.add('hidden');
 
-    const photoUrl = (typeof CREATURE_IMAGES !== 'undefined' && CREATURE_IMAGES[creature.wikiTitle])
-      ? CREATURE_IMAGES[creature.wikiTitle]
-      : `https://upload.wikimedia.org/wikipedia/commons/thumb/${encodeURIComponent(creature.wikiTitle)}.jpg`;
+    const photoUrl = `images/${encodeURIComponent(creature.wikiTitle)}.jpg`;
 
     mainCreatureImgEl.onerror = () => {
-      // 위키 썸네일 에러 시 unsplash 대체 또는 이모지 폴백
-      mainCreatureImgEl.src = `https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=600&auto=format&fit=crop&q=80`;
+      // 만약 로컬 로드 실패 시 위키미디어 직접 로드
+      mainCreatureImgEl.src = `https://upload.wikimedia.org/wikipedia/commons/thumb/${encodeURIComponent(creature.wikiTitle)}.jpg`;
     };
     mainCreatureImgEl.src = photoUrl;
     mainCreatureImgEl.alt = `${creature.name} 실제 사진`;
   } else {
-    // [가짜 합성 생물] 두 동물의 고화질 듀얼 사진
+    // [가짜 합성 생물] 두 동물의 고화질 듀얼 사진 (내장 로컬 이미지)
     singlePhotoWrapperEl.classList.add('hidden');
     hybridPhotoWrapperEl.classList.remove('hidden');
 
-    const p1Url = (typeof HYBRID_IMAGES !== 'undefined' && HYBRID_IMAGES[creature.wikiTitle]) || '';
-    const p2Url = (typeof HYBRID_IMAGES !== 'undefined' && HYBRID_IMAGES[creature.secondWikiTitle]) || '';
+    const p1Url = `images/${encodeURIComponent(creature.wikiTitle)}.jpg`;
+    const p2Url = `images/${encodeURIComponent(creature.secondWikiTitle)}.jpg`;
 
     hybridImg1El.onerror = () => {
       hybridImg1El.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/White_shark.jpg/500px-White_shark.jpg';
