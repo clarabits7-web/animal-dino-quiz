@@ -165,8 +165,12 @@ function renderQuestion() {
 
     const photoUrl = (typeof CREATURE_IMAGES !== 'undefined' && CREATURE_IMAGES[creature.wikiTitle])
       ? CREATURE_IMAGES[creature.wikiTitle]
-      : `https://en.wikipedia.org/wiki/Special:FilePath/${encodeURIComponent(creature.wikiTitle)}.jpg`;
+      : `https://upload.wikimedia.org/wikipedia/commons/thumb/${encodeURIComponent(creature.wikiTitle)}.jpg`;
 
+    mainCreatureImgEl.onerror = () => {
+      // 위키 썸네일 에러 시 unsplash 대체 또는 이모지 폴백
+      mainCreatureImgEl.src = `https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=600&auto=format&fit=crop&q=80`;
+    };
     mainCreatureImgEl.src = photoUrl;
     mainCreatureImgEl.alt = `${creature.name} 실제 사진`;
   } else {
@@ -176,6 +180,13 @@ function renderQuestion() {
 
     const p1Url = (typeof HYBRID_IMAGES !== 'undefined' && HYBRID_IMAGES[creature.wikiTitle]) || '';
     const p2Url = (typeof HYBRID_IMAGES !== 'undefined' && HYBRID_IMAGES[creature.secondWikiTitle]) || '';
+
+    hybridImg1El.onerror = () => {
+      hybridImg1El.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/White_shark.jpg/500px-White_shark.jpg';
+    };
+    hybridImg2El.onerror = () => {
+      hybridImg2El.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Nokota_Horses_cropped.jpg/500px-Nokota_Horses_cropped.jpg';
+    };
 
     hybridImg1El.src = p1Url;
     hybridImg2El.src = p2Url;
